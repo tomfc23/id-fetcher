@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User ID Scraper</title>
+    <title>ID Fetcher</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -160,18 +160,13 @@
     </style>
 </head>
 <body>
-    <h1>User ID Scraper</h1>
+    <h1>User ID Fetcher</h1>
     
-    <div class="form-group">
-        <label for="workerUrl">Cloudflare Worker URL:</label>
-        <input type="text" id="workerUrl" placeholder="https://your-worker.your-subdomain.workers.dev">
-        <small>Deploy the Cloudflare Worker and enter your worker URL above</small>
-    </div>
+    <input type="hidden" id="workerUrl" value="https://id-fetcher.tommyek67.workers.dev/">
     
     <div class="form-group">
         <label for="usernames">Usernames (one per line):</label>
-        <textarea id="usernames" placeholder="caustic&#10;tomfc&#10;username3">caustic
-tomfc</textarea>
+        <textarea id="usernames" placeholder="username1&#10;username2"></textarea>
     </div>
     
     <button onclick="startScraping()">
@@ -317,23 +312,11 @@ tomfc</textarea>
         async function startScraping() {
             if (isScrapingActive) return;
 
-            const workerUrl = document.getElementById('workerUrl').value.trim();
+            const workerUrl = document.getElementById('workerUrl').value; // No need to trim or validate
             const usernamesText = document.getElementById('usernames').value.trim();
             const button = document.querySelector('button');
             const buttonText = document.getElementById('buttonText');
             const progressContainer = document.getElementById('progressContainer');
-
-            if (!workerUrl) {
-                updateStatus('Please enter your Cloudflare Worker URL', 'error');
-                return;
-            }
-
-            try {
-                new URL(workerUrl);
-            } catch (e) {
-                updateStatus('Please enter a valid Cloudflare Worker URL', 'error');
-                return;
-            }
 
             if (!usernamesText) {
                 updateStatus('Please enter at least one username', 'error');
